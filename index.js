@@ -1,22 +1,18 @@
 const express = require("express");
 const app = express();
 
-app.get("/", (request, response) => {
-  response.send("Hello NodeJS");
-});
+const home = require("./routes/home");
+const date = require("./routes/date");
+const file = require("./routes/file");
+const error = require("./routes/error");
 
-app.get("/date", (request, response) => {
-  const date = new Date();
-  response.send(`Todays date is ${date}`);
-});
+app.use("/", home);
 
-app.get("/file", (request, response) => {
-  response.sendFile("./sample.html", { root: __dirname });
-});
+app.use("/date", date);
 
-app.get("*", (request, response) => {
-  response.status(404).send("No Page Found");
-});
+app.use("/file", file);
+
+app.use("*", error);
 
 const port = 4000;
 app.listen(port, () => console.log(`Server is running on port ${port}`));
